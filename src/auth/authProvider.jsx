@@ -19,11 +19,10 @@ function AuthProvider({children}) {
         }),
         [token]
     );
-    useEffect(()=> {
-        sessionStorage.setItem('token', token);
-    }, [token]);
+    // useEffect(()=> {
+    //    sessionStorage.setItem('token', token);
+    // }, [token]);
     
-    // console.log("run auth provider");
     return (
         <AuthContext.Provider value={{authContext}}>{children}</AuthContext.Provider>
     )

@@ -10,12 +10,13 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 
+const AUTH_URL = process.env.REACT_APP_AUTH_URL;
 const defaultTheme = createTheme();
 
 
 async function loginUser(credentials){
   try {
-    return await fetch('http://localhost:8080/login', {
+    return await fetch(AUTH_URL + '/login', {
       method: 'POST',
       headers: {
       'Content-Type': 'application/json'
@@ -35,14 +36,15 @@ function Login({setToken}) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-    const token = await loginUser(data.get('email'), data.get('password'));
-    console.log("token", token);
-    setToken(token);
-    navigate("/", {replace: true});
+    const result = await loginUser({email: data.get('email'), password: data.get('password')});
+    if(result.errorCode === 0){
+      setToken(result.token);
+      sessionStorage.setItem('token', result.token);
+      navigate("/", {replace: true});
+    } else {
+      //Alert
+      console.log("Invalid credentials");
+    }
   };
 
   return (
@@ -59,7 +61,7 @@ function Login({setToken}) {
             }}
           >
             <Typography component="h1" variant="h5">
-              Login in
+              Login
             </Typography>
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
               <TextField

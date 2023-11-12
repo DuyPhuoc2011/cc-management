@@ -38,7 +38,6 @@ const getClients = () => {
       'Content-Type': 'application/json'
     }}).then(async res => {
       var results = await res.json();
-      console.log("results", results);
       resolve(results);
     });
   });
@@ -67,7 +66,7 @@ function Clients() {
       clientName: clientName,
       clientDes: clientDes
     };
-    fetch(API_URL + '/newClient', {
+    fetch(API_URL + '/clients', {
       method: 'POST',
       headers: {
       'Content-Type': 'application/json'

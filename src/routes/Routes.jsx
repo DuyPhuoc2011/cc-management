@@ -13,8 +13,6 @@ import Settings from '../components/Settings/Settings';
 
 function Routes() {
   const {authContext} = useAuth();
-  // console.log("Auth1:", authContext.token );
-  // Define public routes accessible to all users
   const routesForPublic = [
     
   ];
@@ -69,9 +67,9 @@ function Routes() {
     }
   ];
   const router = createBrowserRouter([
-    ... routesForPublic,
-    ... (!authContext.token ? routesForNotAuthenticatedOnly : []),
-    ... routesForAuthenticatedOnly
+    ...routesForPublic,
+    ...(!authContext.token ? routesForNotAuthenticatedOnly : []),
+    ...routesForAuthenticatedOnly
   ]);
 
   return (
