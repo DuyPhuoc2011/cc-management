@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { DataGrid } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
-import './clients.css';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -10,6 +9,8 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import TextField from '@mui/material/TextField';
+import dayjs from 'dayjs';
+import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -32,12 +33,15 @@ const columns = [
 
 const getClients = () => {
   return new Promise((resolve, reject)=> {
-    fetch(API_URL + '/clients', {
-      method: 'GET',
-      headers: {
-      'Content-Type': 'application/json'
-    }}).then(async res => {
-      var results = await res.json();
+    axios.get(API_URL + '/clients').then(res => {
+      var results = res.data;
+      if(!!results){
+        results.forEach(item => {
+          if(item.created_date != null ){
+            item.created_date = dayjs(item.created_date).format("YYYY-MM-DD");
+          }
+        });
+      }
       resolve(results);
     });
   });
@@ -62,26 +66,26 @@ function Clients() {
   }, [open]);
 
   const insertClient = (clientName, clientDes) => {
-    var data = {
-      clientName: clientName,
-      clientDes: clientDes
-    };
-    fetch(API_URL + '/clients', {
-      method: 'POST',
-      headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)}).then(res => {
-      handleClose();
-
+    axios.post(API_URL + '/clients', {
+      name: clientName,
+      description: clientDes
+    }).then(res => {
+      if (res.status === 200) {
+        alert('Insert successfully');
+        handleClose();
+      } else {
+        alert('Insert failed');
+      }
     });
   }
 
   return (
     <>
-      <Button id="create_client_button" variant="contained" onClick={handleOpen}>
-        Create Client
-      </Button>
+      <div className="w-40 block ml-auto">
+        <Button variant="contained" onClick={handleOpen}>
+          Create Client
+        </Button>
+      </div>
       <div style={{ width: '100%' }}>
         <br />
         <DataGrid
@@ -118,15 +122,16 @@ function Clients() {
         <CloseIcon />
         </IconButton>
         <DialogContent dividers>
-          <TextField id="client_name"
-          variant="outlined" 
-          required
-          fullWidth
-          label="Client name"
-          name="Client Name"
-          onChange={e => {setNewClientName(e.target.value)}}
-          />
-          <br />
+          <div className="pb-2">
+            <TextField id="client_name"
+            variant="outlined" 
+            required
+            fullWidth
+            label="Client name"
+            name="Client Name"
+            onChange={e => {setNewClientName(e.target.value)}}
+            />
+          </div>
           <TextField id="client_description"
           variant="outlined" 
           required
