@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -9,42 +9,36 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { login } from '../../store/auth/authAction';
+import { useDispatch } from 'react-redux';
 
-const AUTH_URL = process.env.REACT_APP_AUTH_URL;
 const defaultTheme = createTheme();
 
 
-async function loginUser(credentials){
-  try {
-    return await fetch(AUTH_URL + '/login', {
-      method: 'POST',
-      headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(credentials)}).then(response => response.json()).then(data => data);
-  } catch (error) {
-    return "";
-  }
-  
-}
+// async function loginUser(credentials){
+//   return axios.post(AUTH_URL + '/login', credentials).then(response => response.data);  
+// }
 
-function Login({setToken}) {
+function Login() {
   const [email, setEmail] = useState();
   const [password, setPassword ] = useState();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   console.log("changed");
+  //   if(!!token){
+  //     navigate('/');
+  //   }
+  // }, [token]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const result = await loginUser({email: data.get('email'), password: data.get('password')});
-    if(result.errorCode === 0){
-      setToken(result.token);
-      sessionStorage.setItem('token', result.token);
-      navigate("/", {replace: true});
-    } else {
-      //Alert
-      console.log("Invalid credentials");
-    }
+    dispatch(login({email: data.get('email'), password: data.get('password')})).then((result) => {
+      navigate('/');
+    });
   };
 
   return (

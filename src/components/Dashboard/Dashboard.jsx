@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -16,6 +16,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { getProjects } from '../../store/project/projectActions';
 
 const drawerWidth = 240;
 const sideMenu = [
@@ -82,7 +84,12 @@ export default function Dashboard() {
   const [open, setOpen] = useState(true);
   const [title, setTitle] = useState();
   const navigate = useNavigate();
-  // let title = useRef("Home");
+  const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   dispatch(getProjects());
+  // }, []);
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };

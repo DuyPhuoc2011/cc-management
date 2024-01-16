@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  nginx.conf: |
+    upstream auth-service {
+      server auth-service;
+      server api-service;
+    }
+
+    server {
+    listen 80;
+      
+      location /auth/ {
+        proxy_pass http://auth-service/;
+      }
+
+      location /api/ {
+        proxy_pass http://api-service/;
+      }
+
+      location / {
+        root /usr/share/nginx/html/;
+        include /etc/nginx/mime.types;
+        try_files $uri $uri/ /index.html;
+      }
+    }

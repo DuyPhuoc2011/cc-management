@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { useAuth } from "../auth/authProvider";
 import  ProtectedRoute from "./ProtectedRoute";
 import Login from '../components/Login/Login';
 import Dashboard from '../components/Dashboard/Dashboard';
@@ -10,9 +9,14 @@ import Projects from '../components/Projects/Projects';
 import Clients from '../components/Clients/Clients';
 import Teams from '../components/Teams/Teams';
 import Settings from '../components/Settings/Settings';
+import { useSelector } from 'react-redux';
 
 function Routes() {
-  const {authContext} = useAuth();
+  
+  let token = sessionStorage.getItem('token');
+  // const {token} = useSelector(state => state.auth);
+  console.log("token", token);
+  
   const routesForPublic = [
     
   ];
@@ -63,12 +67,12 @@ function Routes() {
   const routesForNotAuthenticatedOnly = [
     {
         path: "/login",
-        element: <Login setToken={authContext.setToken}/>
+        element: <Login />
     }
   ];
   const router = createBrowserRouter([
     ...routesForPublic,
-    ...(!authContext.token ? routesForNotAuthenticatedOnly : []),
+    ...(!token ? routesForNotAuthenticatedOnly : []),
     ...routesForAuthenticatedOnly
   ]);
 
