@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Test') {
             steps {
-                echo 'Building...'
+                echo 'Testing'
                 sh "whoami && pwd"
                 // Add your build steps here
             }
