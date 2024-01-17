@@ -1,16 +1,15 @@
 pipeline {
     agent any
+    environment {
+        // PATH_PROJECT = '/var/lib/jenkins/workspace/cc-management-pipeline'
+        DOCKER_HUB = 'duyphuoc'
+        DOCKER_REPOSITORY = 'cc-management'
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
+        SERVICE_NAME = 'react'
+        DOCKER_TAG = "${DOCKER_HUB}/${DOCKER_REPOSITORY}:${SERVICE_NAME}-${env.BRANCH_NAME}-${env.GIT_COMMIT.substring(0, 7)}"
+    }
     
     stages {
-        environment {
-            // PATH_PROJECT = '/var/lib/jenkins/workspace/cc-management-pipeline'
-            DOCKER_HUB = 'duyphuoc'
-            DOCKER_REPOSITORY = 'cc-management'
-            DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
-            SERVICE_NAME = 'react'
-            DOCKER_TAG = "${DOCKER_HUB}/${DOCKER_REPOSITORY}:${SERVICE_NAME}-${env.BRANCH_NAME}-${env.GIT_COMMIT.substring(0, 7)}"
-        }
-
         stage('Checkout source') {
             steps {
                 echo "Checking out source code"
