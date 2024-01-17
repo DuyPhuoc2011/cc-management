@@ -5,7 +5,7 @@ pipeline {
         stage('Test') {
             when { 
                 expression { 
-                    env.BRANCH_NAME == 'origin/staging' || env.BRANCH_NAME == 'origin/prod'
+                    env.GIT_BRANCH == 'origin/staging' || env.BRANCH_NAME == 'origin/prod'
                 }
             }
             steps {
