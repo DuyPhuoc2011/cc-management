@@ -6,7 +6,6 @@ pipeline {
         DOCKER_REPOSITORY = 'cc-management'
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
         SERVICE_NAME = 'react'
-        BRANCH_NAME = env.GIT_BRANCH.split('/')[1]
     }
 
     stages {
@@ -25,7 +24,8 @@ pipeline {
             }
             steps {
                 script {
-                    env.IMAGE_TAG = "${DOCKER_HUB}/${DOCKER_REPOSITORY}:${SERVICE_NAME}-${env.BRANCH_NAME}-${env.GIT_COMMIT.substring(0, 7)}"
+                    env.BRANCH_NAME = env.GIT_BRANCH.split('/')[1]
+                    env.IMAGE_TAG = "${DOCKER_HUB}/${DOCKER_REPOSITORY}:${SERVICE_NAME}-${BRANCH_NAME}-${env.GIT_COMMIT.substring(0, 7)}"
                     echo "Building image ${IMAGE_TAG}"
                     sh "docker build -t ${IMAGE_TAG} . \
                         && echo ${DOCKERHUB_CREDENTIALS_USR} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin \
