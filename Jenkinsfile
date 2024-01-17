@@ -8,7 +8,7 @@ pipeline {
         SERVICE_NAME = 'react'
         DOCKER_TAG = "${DOCKER_HUB}/${DOCKER_REPOSITORY}:${SERVICE_NAME}-${env.BRANCH_NAME}-${env.GIT_COMMIT.substring(0, 7)}"
     }
-    
+
     stages {
         stage('Checkout source') {
             steps {
@@ -25,9 +25,9 @@ pipeline {
             }
             steps {
                 script {
-                    echo "Building image ${DOCKER_TAG}"
-                    env.IMAGE_TAG = ${DOCKER_TAG}
-                    sh "docker build --no-cache -t ${DOCKER_TAG} . \
+                    echo "Building image ${DOCKER_HUB}/${DOCKER_REPOSITORY}:${SERVICE_NAME}-${env.BRANCH_NAME}-${env.GIT_COMMIT.substring(0, 7)}"
+                    env.IMAGE_TAG = "${DOCKER_HUB}/${DOCKER_REPOSITORY}:${SERVICE_NAME}-${env.BRANCH_NAME}-${env.GIT_COMMIT.substring(0, 7)}"
+                    sh "docker build --no-cache -t ${IMAGE_TAG} . \
                         && echo ${DOCKERHUB_CREDENTIALS_USR} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin \
                         && docker push ${DOCKER_TAG} \
                         && docker rmi ${DOCKER_TAG}"
