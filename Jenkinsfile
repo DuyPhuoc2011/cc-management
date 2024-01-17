@@ -9,7 +9,7 @@ pipeline {
                 }
             }
             steps {
-                echo 'Testing 1'
+                echo 'Testing 2'
                 sh "whoami && pwd"
                 // Add your build steps here
             }
