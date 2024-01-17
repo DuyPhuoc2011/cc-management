@@ -5,11 +5,11 @@ pipeline {
         stage('Test') {
             when { 
                 expression { 
-                    env.BRANCH_NAME == 'origin/staging' || env.BRANCH_NAME == 'origin/prod'
+                    env.GIT_BRANCH == 'origin/staging' || env.BRANCH_NAME == 'origin/prod'
                 }
             }
             steps {
-                echo 'Testing 1'
+                echo 'Testing 2'
                 sh "whoami && pwd"
                 // Add your build steps here
             }
