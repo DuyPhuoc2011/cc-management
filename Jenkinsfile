@@ -36,8 +36,10 @@ pipeline {
         }
 
         stage('Deploy to staging environment'){
-            script {
-                sh "kubectl set image deployment/react-app react-app=${IMAGE_TAG}"
+            steps {
+                script {
+                    sh "kubectl set image deployment/react-app react-app=${IMAGE_TAG}"
+                }
             }
         }
     }
