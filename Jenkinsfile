@@ -16,7 +16,7 @@ pipeline {
             }
         }
 
-        stage('Build/push image') {
+        stage('Build and push image') {
             when { 
                 expression { 
                     env.GIT_BRANCH == 'origin/staging' || env.BRANCH_NAME == 'origin/prod'
