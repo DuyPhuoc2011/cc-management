@@ -14,7 +14,7 @@ RUN npm ci
 COPY . .
 
 # RUN npm run build
-RUN if ["$NODE_ENV" = "production"]; then npm run build; else npm run build:staging; fi
+RUN if [ "$NODE_ENV" = "production" ]; then npm run build; else npm run build:staging; fi
 
 # Stage 2: Serve the app with Nginx
 FROM nginx:1.21-alpine
