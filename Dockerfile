@@ -1,6 +1,8 @@
 # Stage 1: Build the React app
 FROM node:18-alpine as build
 
+ARG NODE_ENV
+
 ENV NODE_ENV=${NODE_ENV}
 
 WORKDIR /app
