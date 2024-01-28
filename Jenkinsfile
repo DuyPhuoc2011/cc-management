@@ -9,6 +9,12 @@ pipeline {
     }
 
     stages {
+        stage('Cleanup') {
+            steps {
+                cleanWs()
+            }
+        }
+        
         stage('Checkout source') {
             steps {
                 echo "Checking out source code"
