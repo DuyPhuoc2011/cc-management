@@ -11,10 +11,11 @@ pipeline {
     stages {
         stage('Cleanup') {
             steps {
+                sh 'rm -rf node_modules'
                 cleanWs()
             }
         }
-        
+
         stage('Checkout source') {
             steps {
                 echo "Checking out source code"
