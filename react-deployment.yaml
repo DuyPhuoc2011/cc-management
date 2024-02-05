@@ -43,6 +43,51 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
-  type: LoadBalancer
+  # type: LoadBalancer
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: react-app-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: react-app-virtual-service
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - react-app-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: react-app-service
+        port:
+          number: 80
+          
+  - match:
+    - uri:
+        prefix: /auth
+    route:
+    - destination:
+        host: auth-service
+        port:
+          number: 80
+
   
   
