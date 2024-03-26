@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: react-app
-          image: duyphuoc/cc-management:react-staging-f4c3b84
+          image: duyphuoc/cc-management:react-staging-8351985
           imagePullPolicy: Always
           env:
             - name: NODE_ENV
@@ -87,6 +87,5 @@ spec:
         host: auth-service
         port:
           number: 80
-
   
   

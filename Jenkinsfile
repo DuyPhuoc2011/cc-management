@@ -46,7 +46,6 @@ pipeline {
             steps {
                 script {
                     sh "kubectl set image deployment/react-app react-app=${IMAGE_TAG}"
-                    sh "kubectl rollout restart deployment/react-app"
                 }
             }
         }
